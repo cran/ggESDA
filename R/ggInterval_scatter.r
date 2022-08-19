@@ -12,8 +12,9 @@
 #' If specified and inherit. aes = TRUE (the default),
 #' it is combined with the default mapping at the top level of
 #' the plot. You must supply mapping if there is no plot mapping.
+#' @param ... Others in ggplot2.
 #' @return Return a ggplot2 object.
-#' @usage ggInterval_scatter(data = NULL,mapping = aes(NULL))
+#' @usage ggInterval_scatter(data = NULL,mapping = aes(NULL), ...)
 #' @examples
 #' a<-rnorm(1000,0,5)
 #' b<-runif(1000,-20,-10)
@@ -26,7 +27,7 @@
 #'     col="red",lty=2,fill="blue",alpha=0.3))
 #'
 #'
-#' myIris <- classic2sym(iris,groupby = Species)$intervalData
+#' myIris <- classic2sym(iris,groupby = "Species")$intervalData
 #' p<-ggInterval_scatter(myIris,aes(myIris$Petal.Length,myIris$Petal.Width))
 #' p
 #' p+scale_fill_manual(labels=rownames(myIris),
@@ -34,14 +35,15 @@
 #'                    name="Group")
 #'
 #'
-#' mydata <- RSDA::facedata
+#' mydata <- ggESDA::facedata
 #' p<-ggInterval_scatter(mydata[1:10,],aes(AD,BC,alpha=0.2))
 #' p+scale_fill_manual(labels=rownames(mydata)[1:10],
 #'                    values=rainbow(10),
 #'                    name="Group")
 #' @export
-ggInterval_scatter <- function(data = NULL,mapping = aes(NULL)){
+ggInterval_scatter <- function(data = NULL,mapping = aes(NULL), ...){
   #data preparing
+  . <- NULL
   argsNum<-length(mapping)
   args<-lapply(mapping[1:argsNum],FUN=rlang::get_expr)
   this.x <- args$x ; this.y <- args$y
@@ -91,20 +93,38 @@ ggInterval_scatter <- function(data = NULL,mapping = aes(NULL)){
     }else{
       usermapping <- mapping
     }
-    mymapping <- list(data=d,
-                      mapping=aes(xmin=x1, xmax=x2, ymin=y1, ymax=y2,
-                                  fill=gray.colors(n),alpha=0.5),col="black")
-    allmapping <-as.list(structure(as.expression(c(usermapping,mymapping)),class="uneval"))
+    #add facets
+    d <- addFactor(rawData = data, iData = d)
 
+
+    fcLocation <- c(which(names(mapping) == "fill"), which(names(mapping) == "col"))
+    if(length(fcLocation) != 0){
+      usermapping <- mapping[-fcLocation] #Aesthetic without fill, col
+    }else{
+      usermapping <- mapping
+    }
+    # if(is.null(args$fill)){
+    #   args$fill <- grDevices::gray.colors(n)
+    # }
+    # if(is.null(args$col)){
+    #   args$col <- grDevices::gray.colors(n)
+    # }
+
+
+    mymapping <- list(d, mapping=aes(xmin=d$x1, xmax=d$x2, ymin=d$y1, ymax=d$y2,alpha=0.5,fill = eval(args$fill), col = eval(args$col)), ...)
+
+    #mymapping <- list(mapping=aes(xmin=x1, xmax=x2, ymin=y1, ymax=y2,alpha=0.5))
+    allmapping <-as.list(structure(as.expression(c(mymapping,usermapping)),class="uneval"))
+
+    #ggplot(data=d,aes(x = x1, y = y1))+
+    #  do.call(geom_rect,ss)
 
     #start plot
-    ggplot(data=d,aes(x1,y1))+
+    ggplot(data=d,aes(x = x1, y = y1))+
       do.call(geom_rect,allmapping)+
       geom_text(label=myRowNames)+
-      scale_fill_manual(name="Concept",
-                        values=gray.colors(n),
-                        labels=myRowNames)+
       guides(colour = FALSE, alpha = FALSE)+
-      labs(x=attr1,y=attr2)
+      labs(x=attr1,y=attr2,fill="Concepts")
+
   })
 }

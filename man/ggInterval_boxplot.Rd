@@ -8,7 +8,7 @@ ggInterval_boxplot(data = NULL,mapping = aes(NULL),plotAll=FALSE)
 }
 \arguments{
 \item{data}{A ggESDA object. It can also be either RSDA object or
-classical data frame,which will be automatically convert to ggESDA
+classical data frame, which will be automatically convert to ggESDA
 data.}
 
 \item{mapping}{Set of aesthetic mappings created by aes() or aes_().
@@ -34,7 +34,7 @@ p+scale_fill_manual(values = c("red","yellow",
     labels=c("0\%","25\%","50\%","75\%","100\%"),
     name="quantile")
 
-mydata<-RSDA::facedata
+mydata<-ggESDA::facedata
 ggInterval_boxplot(mydata,aes(AD,col="black",alpha=0.5))
 
 myMtcars<-classic2sym(mtcars)

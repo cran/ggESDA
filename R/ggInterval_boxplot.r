@@ -5,7 +5,7 @@
 #' @import rlang ggplot2
 #' @importFrom RSDA is.sym.interval
 #' @param data A ggESDA object. It can also be either RSDA object or
-#' classical data frame,which will be automatically convert to ggESDA
+#' classical data frame, which will be automatically convert to ggESDA
 #' data.
 #' @param mapping Set of aesthetic mappings created by aes() or aes_().
 #' If specified and inherit. aes = TRUE (the default),
@@ -23,7 +23,7 @@
 #'     labels=c("0%","25%","50%","75%","100%"),
 #'     name="quantile")
 #'
-#' mydata<-RSDA::facedata
+#' mydata<-ggESDA::facedata
 #' ggInterval_boxplot(mydata,aes(AD,col="black",alpha=0.5))
 #'
 #' myMtcars<-classic2sym(mtcars)

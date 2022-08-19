@@ -17,7 +17,7 @@
 #' @examples
 #' ggInterval_centerRange(iris,aes(iris$Sepal.Length))
 #'
-#' mydata<-RSDA::facedata
+#' mydata<-ggESDA::facedata
 #' ggInterval_centerRange(mydata,aes(AD,col="blue",pch=2))
 #' @export
 ggInterval_centerRange<- function(data = NULL,mapping = aes(NULL),plotAll=FALSE){
@@ -98,6 +98,11 @@ ggInterval_centerRange<- function(data = NULL,mapping = aes(NULL),plotAll=FALSE)
     #usermapping <- mapping[-1] #Aesthetic without x,y
     mymapping <- list(mapping=aes(size=4))
     allmapping <-as.list(structure(as.expression(c(usermapping,mymapping)),class="uneval"))
+
+    #add facets
+    if(!plotAll){
+      d <- addFactor(rawData = data, iData = d)
+    }
 
     #plot
     base <- ggplot(d,aes(center,r,group = var))+

@@ -8,7 +8,7 @@ ggInterval_minmax(data = NULL,mapping = aes(NULL),
           scaleXY = "local",plotAll=FALSE)
 }
 \arguments{
-\item{data}{A ggESDA object.It can also be either RSDA object or
+\item{data}{A ggESDA object. It can also be either RSDA object or
 classical data frame,which will be automatically convert to ggESDA
 data.}
 
@@ -33,14 +33,14 @@ by marking minimal and maximal point.
 \examples{
 ggInterval_minmax(mtcars,aes(disp))
 
-mydata2<-RSDA::Cardiological
+mydata2<-ggESDA::Cardiological
 ggInterval_minmax(mydata2,aes(mydata2$Pulse,size=3))
 
 d<-mapply(c(10,20,40,80,160),c(20,40,80,160,320),FUN=runif,n=1000)
 d<-data.frame(qq=matrix(d,ncol=1))
 ggInterval_minmax(d,aes(qq))
 
-myIris<-classic2sym(iris,groupby=Species)
+myIris<-classic2sym(iris,groupby="Species")
 myIris<-myIris$intervalData
 ggInterval_minmax(myIris,aes(myIris$Petal.Length))+
    theme_classic()

@@ -31,14 +31,14 @@
 #' @examples
 #' ggInterval_PCA(iris)
 #'
-#' mydata2<-RSDA::Cardiological
+#' mydata2<-ggESDA::Cardiological
 #' ggInterval_PCA(mydata2,aes(col="red",alpha=0.2))
 #'
 #' d<-mapply(c(10,20,40,80,160),c(20,40,80,160,320),FUN=runif,n=1000)
 #' d<-data.frame(qq=matrix(d,ncol=4))
 #' ggInterval_PCA(d)
 #'
-#' myIris<-classic2sym(iris,Species)
+#' myIris<-classic2sym(iris,"Species")
 #' p<-ggInterval_PCA(myIris,plot=FALSE)
 #' p$ggplotPCA
 #' p$scores_interval
@@ -128,6 +128,8 @@ ggInterval_PCA<-function(data = NULL,mapping = aes(NULL),plot=TRUE,
 
     base <- ggplot(d, aes(.data$x1, .data$y1)) +
       do.call(geom_segment, allmapping)
+
+
   }
 
 

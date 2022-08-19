@@ -61,11 +61,28 @@ variables.Each variables contains min values and max values as a
 symbolic data.
 }
 \examples{
-mydata<-ggESDA::classic2sym(mtcars,k=4)$intervalData
-ggInterval_radar(data=mydata[,c("mpg","disp",'drat')])
-ggInterval_radar(data=mydata[,c("mpg","disp",'drat')],inOneFig = TRUE,plotPartial = c(2,3))
+# must specify plotPartial to some certain rows you want to plot
+Environment.n <- Environment[, 5:17]
+ggInterval_radar(Environment.n,
+                plotPartial = 2,
+                showLegend = FALSE,
+                base_circle = TRUE,
+                base_lty = 2,
+                addText = FALSE
+) +
+ labs(title = "") +
+ scale_fill_manual(values = c("gray50")) +
+ scale_color_manual(values = c("red"))
 
+ggInterval_radar(Environment,
+                plotPartial = 2,
+                showLegend = FALSE,
+                base_circle = FALSE,
+                base_lty = 1,
+                addText = TRUE
+) +
+ labs(title = "") +
+ scale_fill_manual(values = c("gray50")) +
+ scale_color_manual(values = c("gray50"))
 
-mydata<-ggESDA::classic2sym(iris,groupby = Species)$intervalData
-ggInterval_radar(mydata,inOneFig = TRUE)+geom_text(aes(x=0.6,0.6),label="Add anything you want")
 }
